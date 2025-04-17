@@ -68,21 +68,43 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function playMedia() {
-        videoPlayer.play();
-        if (audioPlayer) audioPlayer.play();
-        
-        // Update UI
-        if (playButton) playButton.style.display = 'none';
-        if (pauseButton) pauseButton.style.display = 'inline-block';
+        try {
+            // Play video with promise handling
+            const playPromise = videoPlayer.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Video started playing successfully
+                    // Update UI
+                    if (playButton) playButton.style.display = 'none';
+                    if (pauseButton) pauseButton.style.display = 'inline-block';
+                }).catch(error => {
+                    console.log("Error playing video:", error);
+                    // Don't update UI if play failed
+                });
+            }
+        } catch (e) {
+            console.error("Error in playMedia:", e);
+        }
     }
     
     function pauseMedia() {
-        videoPlayer.pause();
-        if (audioPlayer) audioPlayer.pause();
-        
-        // Update UI
-        if (pauseButton) pauseButton.style.display = 'none';
-        if (playButton) playButton.style.display = 'inline-block';
+        try {
+            // First update UI to prevent rapid toggling
+            if (pauseButton) pauseButton.style.display = 'none';
+            if (playButton) playButton.style.display = 'inline-block';
+            
+            // Then pause media
+            if (!videoPlayer.paused) {
+                videoPlayer.pause();
+            }
+            
+            if (audioPlayer && !audioPlayer.paused) {
+                audioPlayer.pause();
+            }
+        } catch (e) {
+            console.error("Error in pauseMedia:", e);
+        }
     }
     
     function toggleMute() {
@@ -291,14 +313,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function jumpToEvent(timestamp) {
-        // Seek video to event timestamp
-        videoPlayer.currentTime = timestamp;
-        if (audioPlayer) {
-            audioPlayer.currentTime = timestamp;
+        try {
+            // First pause everything
+            if (!videoPlayer.paused) {
+                videoPlayer.pause();
+            }
+            if (audioPlayer && !audioPlayer.paused) {
+                audioPlayer.pause();
+            }
+            
+            // Wait a moment before seeking
+            setTimeout(() => {
+                // Seek video to event timestamp
+                videoPlayer.currentTime = timestamp;
+                if (audioPlayer) {
+                    audioPlayer.currentTime = timestamp;
+                }
+                
+                // Wait a bit before playing to let the seek complete
+                setTimeout(() => {
+                    // Play media
+                    playMedia();
+                }, 100);
+            }, 50);
+        } catch (e) {
+            console.error("Error in jumpToEvent:", e);
         }
-        
-        // Play media
-        playMedia();
     }
     
     function highlightCurrentEvents() {

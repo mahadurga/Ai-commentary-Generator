@@ -61,24 +61,62 @@
                             Your browser does not support the audio element.
                         </audio>
                         <div class="d-flex justify-content-between mt-2">
-                            <button class="btn btn-sm btn-outline-primary" onclick="document.getElementById('commentary-audio').play()">
+                            <button class="btn btn-sm btn-outline-primary" onclick="playCommentaryOnly()">
                                 <i class="bi bi-play-fill"></i> Play Commentary
                             </button>
                             <button class="btn btn-sm btn-outline-info" onclick="toggleAudioWithVideo()">
                                 <i class="bi bi-play-circle"></i> Sync with Video
                             </button>
                         </div>
+                        
+                        <script>
+                            function playCommentaryOnly() {
+                                const audio = document.getElementById('commentary-audio');
+                                if (audio) {
+                                    // First pause the audio if it's playing
+                                    if (!audio.paused) {
+                                        audio.pause();
+                                        // Wait a moment before playing again
+                                        setTimeout(() => {
+                                            audio.play().catch(e => console.log("Error playing audio:", e));
+                                        }, 50);
+                                    } else {
+                                        audio.play().catch(e => console.log("Error playing audio:", e));
+                                    }
+                                }
+                            }
+                        </script>
                         <script>
                             function toggleAudioWithVideo() {
                                 const video = document.getElementById('results-video');
                                 const audio = document.getElementById('commentary-audio');
                                 
-                                if (video.paused) {
-                                    video.play();
-                                    audio.play();
-                                } else {
-                                    video.pause();
-                                    audio.pause();
+                                try {
+                                    if (video.paused) {
+                                        // First play the video, then the audio
+                                        const videoPlayPromise = video.play();
+                                        
+                                        if (videoPlayPromise !== undefined) {
+                                            videoPlayPromise
+                                                .then(() => {
+                                                    // Video is playing, now play audio
+                                                    setTimeout(() => {
+                                                        audio.play().catch(e => console.log("Audio play error:", e));
+                                                    }, 100);
+                                                })
+                                                .catch(e => {
+                                                    console.log("Video play error:", e);
+                                                });
+                                        }
+                                    } else {
+                                        // Pause in reverse order: first audio, then video
+                                        audio.pause();
+                                        setTimeout(() => {
+                                            video.pause();
+                                        }, 50);
+                                    }
+                                } catch (e) {
+                                    console.error("Error in toggleAudioWithVideo:", e);
                                 }
                             }
                         </script>
