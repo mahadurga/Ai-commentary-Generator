@@ -29,9 +29,10 @@ try:
 except ImportError:
     logger.warning("yt-dlp not installed. YouTube video import will be disabled.")
 
-# Configure upload folder
+# Configure folders
 UPLOAD_FOLDER = Path('./static/uploads')
 RESULTS_FOLDER = Path('./static/results')
+SAMPLE_FOLDER = Path('./static/samples')
 ALLOWED_EXTENSIONS = {'mp4', 'avi', 'mov', 'mkv'}
 
 # Create necessary folders if they don't exist
@@ -40,6 +41,7 @@ RESULTS_FOLDER.mkdir(exist_ok=True, parents=True)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['RESULTS_FOLDER'] = RESULTS_FOLDER
+app.config['SAMPLE_FOLDER'] = SAMPLE_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB max upload size
 
 def allowed_file(filename):

@@ -18,10 +18,17 @@
                     
                     <div class="video-player-container mb-4">
                         <!-- Simple HTML5 video tag with controls -->
-                        <video id="results-video" class="img-fluid w-100 rounded" controls>
+                        <video id="results-video" class="img-fluid w-100 rounded" controls preload="auto">
                             <source src="{{ url_for('static', filename=results.processed_video.replace('./static/', '')) }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        
+                        <!-- Video format debug message -->
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                Video file path: {{ results.processed_video.replace('./static/', '') }}
+                            </small>
+                        </div>
                         
                         <!-- Simple progress bar for visualization only -->
                         <div class="mt-3">
@@ -51,10 +58,17 @@
                             {{ results.commentary }}
                         </div>
                         <!-- Simple audio player with controls -->
-                        <audio id="commentary-audio" class="commentary-audio-player w-100" controls>
+                        <audio id="commentary-audio" class="commentary-audio-player w-100" controls preload="auto">
                             <source src="{{ url_for('static', filename=results.commentary_audio.replace('./static/', '')) }}" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
+                        
+                        <!-- Audio file debug info -->
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                Audio file path: {{ results.commentary_audio.replace('./static/', '') }}
+                            </small>
+                        </div>
                         
                         <div class="mt-3">
                             <div class="alert alert-info small">
