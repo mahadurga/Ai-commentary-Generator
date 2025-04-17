@@ -14,7 +14,11 @@
                         <div class="col-md-6 mb-4 mb-md-0">
                             <div class="video-player-container">
                                 <video id="video-preview" class="img-fluid w-100 rounded" controls>
+                                    {% if video and video.filename %}
                                     <source src="{{ url_for('static', filename='uploads/' + video.filename) }}" type="video/mp4">
+                                    {% else %}
+                                    <source src="{{ url_for('static', filename='samples/sample-cricket.mp4') if video and video.filename else url_for('static', filename='samples/sample-cricket.mp4') }}" type="video/mp4">
+                                    {% endif %}
                                     Your browser does not support the video tag.
                                 </video>
                             </div>

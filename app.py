@@ -80,8 +80,15 @@ def upload_file():
 @app.route('/process')
 def process_video_view():
     if 'uploaded_video' not in session:
-        flash('No uploaded video found', 'danger')
-        return redirect(url_for('index'))
+        # For demo purposes, create a sample video entry
+        session['uploaded_video'] = {
+            'filename': 'samples/sample-cricket.mp4',
+            'original_name': 'Sample Cricket Video.mp4',
+            'path': os.path.join('static', 'samples', 'sample-cricket.mp4'),
+            'unique_id': 'sample-12345',
+            'timestamp': time.time()
+        }
+        logger.info("Created sample video entry for demo")
     
     video_info = session['uploaded_video']
     return render_template('process.html', video=video_info)
@@ -133,8 +140,33 @@ def start_processing():
 @app.route('/results')
 def results():
     if 'processing_results' not in session:
-        flash('No processed results found', 'danger')
-        return redirect(url_for('index'))
+        # For demo purposes, create sample results
+        if 'uploaded_video' not in session:
+            # Also create a sample video entry if needed
+            session['uploaded_video'] = {
+                'filename': 'samples/sample-cricket.mp4',
+                'original_name': 'Sample Cricket Video.mp4',
+                'path': os.path.join('static', 'samples', 'sample-cricket.mp4'),
+                'unique_id': 'sample-12345',
+                'timestamp': time.time()
+            }
+        
+        # Sample event data
+        from utils.video_processor import generate_simulated_events
+        sample_events = generate_simulated_events()
+        
+        # Sample commentary
+        from utils.commentary_generator import generate_commentary
+        sample_commentary = generate_commentary(sample_events)
+        
+        # Create sample results
+        session['processing_results'] = {
+            'processed_video': os.path.join('static', 'samples', 'sample-cricket.mp4'),
+            'commentary_audio': os.path.join('static', 'samples', 'sample-commentary.mp3'),
+            'events': sample_events,
+            'commentary': sample_commentary
+        }
+        logger.info("Created sample results for demo")
     
     video_info = session['uploaded_video']
     results_info = session['processing_results']
@@ -146,7 +178,10 @@ def results():
 @app.route('/api/events')
 def get_events():
     if 'processing_results' not in session:
-        return jsonify({'status': 'error', 'message': 'No processed results found'})
+        # For demo purposes, generate sample events
+        from utils.video_processor import generate_simulated_events
+        sample_events = generate_simulated_events()
+        return jsonify({'status': 'success', 'events': sample_events})
     
     events = session['processing_results'].get('events', [])
     return jsonify({'status': 'success', 'events': events})

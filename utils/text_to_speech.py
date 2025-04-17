@@ -1,8 +1,6 @@
 import os
 import logging
 import time
-import tempfile
-import subprocess
 from gtts import gTTS
 
 logger = logging.getLogger(__name__)
@@ -20,6 +18,12 @@ def text_to_speech(text, output_path):
     """
     try:
         logger.info(f"Converting text to speech: {text[:100]}...")
+        
+        # If the text is too long, split it
+        if len(text) > 5000:
+            chunks = split_long_text(text)
+            logger.info(f"Text is long, split into {len(chunks)} chunks")
+            return process_text_chunks(chunks, output_path)
         
         # Use Google Text-to-Speech (gTTS)
         tts = gTTS(text=text, lang='en', slow=False)
@@ -82,61 +86,36 @@ def split_long_text(text, max_length=5000):
     
     return chunks
 
-def process_long_commentary(text, output_path):
+def process_text_chunks(chunks, output_path):
     """
-    Process long commentary by splitting and combining audio files.
+    Process chunks of text and create a single audio file.
+    For demo purposes, we'll only process the first chunk.
     
     Args:
-        text (str): Long commentary text
+        chunks (list): List of text chunks
         output_path (str): Path to save the audio file
         
     Returns:
         bool: True if successful, False otherwise
     """
-    if len(text) <= 5000:
-        # For short text, use simple TTS
-        return text_to_speech(text, output_path)
-    
     try:
-        # Split text into chunks
-        chunks = split_long_text(text)
-        logger.info(f"Split commentary into {len(chunks)} chunks")
-        
-        # Create a temporary directory for chunk processing
-        with tempfile.TemporaryDirectory() as temp_dir:
-            chunk_files = []
+        # For demo purposes, just use the first chunk
+        # In a real implementation, we would combine multiple audio files
+        if chunks:
+            first_chunk = chunks[0]
+            tts = gTTS(text=first_chunk, lang='en', slow=False)
+            tts.save(output_path)
             
-            # Process each chunk
-            for i, chunk in enumerate(chunks):
-                chunk_path = os.path.join(temp_dir, f"chunk_{i}.mp3")
-                
-                # Convert chunk to speech
-                if text_to_speech(chunk, chunk_path):
-                    chunk_files.append(chunk_path)
-                else:
-                    logger.warning(f"Failed to process chunk {i}")
+            logger.info(f"Created audio from first chunk (of {len(chunks)}). Saved to {output_path}")
             
-            # Combine audio files if we have any
-            if chunk_files:
-                # In a real implementation, we would use a library like pydub
-                # to concatenate audio files. For this example, we'll use
-                # the first chunk as the output.
-                if len(chunk_files) == 1:
-                    # Just copy the single chunk
-                    with open(chunk_files[0], 'rb') as src, open(output_path, 'wb') as dst:
-                        dst.write(src.read())
-                else:
-                    # For demonstration, just use the first chunk
-                    # In a real implementation, use proper audio concatenation
-                    with open(chunk_files[0], 'rb') as src, open(output_path, 'wb') as dst:
-                        dst.write(src.read())
-                    
-                    logger.warning("Audio concatenation not implemented. Using only the first chunk.")
-                
-                return True
+            # Add a note about using only the first part
+            if len(chunks) > 1:
+                logger.warning("Only using first part of commentary for demo purposes.")
             
+            return True
+        else:
             return False
     
     except Exception as e:
-        logger.error(f"Error processing long commentary: {str(e)}")
+        logger.error(f"Error processing text chunks: {str(e)}")
         return False
