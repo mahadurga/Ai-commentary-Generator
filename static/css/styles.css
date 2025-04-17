@@ -1,0 +1,379 @@
+/* Custom styles for Cricket Video Analysis System */
+
+/* File upload styles */
+.file-drop-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    border: 2px dashed var(--bs-secondary);
+    border-radius: 0.5rem;
+    background-color: var(--bs-dark);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.file-drop-area.highlight {
+    border-color: var(--bs-primary);
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.file-drop-area input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-drop-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--bs-primary);
+}
+
+.file-preview {
+    display: none;
+    margin-top: 1rem;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+#file-info {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--bs-info);
+}
+
+/* Video processing styles */
+.processing-container {
+    padding: 2rem;
+    border-radius: 0.5rem;
+    background-color: var(--bs-dark);
+    margin-bottom: 1rem;
+}
+
+.processing-status {
+    margin-top: 2rem;
+}
+
+.progress {
+    height: 1.5rem;
+    background-color: var(--bs-dark);
+}
+
+.progress-bar {
+    background-color: var(--bs-primary);
+}
+
+.processing-steps {
+    margin-top: 1.5rem;
+}
+
+.processing-steps .step {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.processing-steps .step-icon {
+    margin-right: 0.5rem;
+    color: var(--bs-primary);
+}
+
+.cricket-field-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Results page styles */
+.results-container {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--bs-dark);
+    margin-bottom: 1rem;
+}
+
+.video-player-container {
+    position: relative;
+    width: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.video-controls {
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.video-progress-container {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    margin-bottom: 0.5rem;
+}
+
+.video-progress {
+    width: 100%;
+    height: 8px;
+    background-color: var(--bs-dark);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    border-radius: 4px;
+}
+
+.video-progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background-color: var(--bs-primary);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.video-progress::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background-color: var(--bs-primary);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.events-timeline {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    background-color: var(--bs-dark);
+    border-radius: 4px;
+    margin-top: -20px;
+    margin-bottom: 0.5rem;
+}
+
+.event-marker {
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    top: 0;
+    transform: translateX(-50%);
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.boundary-event {
+    background-color: var(--bs-success);
+}
+
+.wicket-event {
+    background-color: var(--bs-danger);
+}
+
+.shot-event {
+    background-color: var(--bs-warning);
+}
+
+.other-event {
+    background-color: var(--bs-info);
+}
+
+.control-button {
+    background-color: transparent;
+    border: none;
+    color: var(--bs-light);
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.control-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.control-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.time-display {
+    color: var(--bs-light);
+    font-size: 0.9rem;
+    margin: 0 0.5rem;
+}
+
+.volume-control {
+    width: 80px;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--bs-secondary);
+    outline: none;
+    border-radius: 3px;
+}
+
+.volume-control::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background-color: var(--bs-light);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.volume-control::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background-color: var(--bs-light);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.cricket-events-container {
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.event-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.current-event {
+    background-color: rgba(13, 110, 253, 0.1);
+    border-left: 4px solid var(--bs-primary);
+}
+
+.event-type-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Commentary section */
+.commentary-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--bs-dark);
+}
+
+.commentary-text {
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.commentary-audio-player {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .file-drop-area {
+        padding: 1rem;
+    }
+    
+    .upload-icon {
+        font-size: 2rem;
+    }
+    
+    .video-controls {
+        flex-wrap: wrap;
+    }
+    
+    .volume-control-container {
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+    
+    .volume-control {
+        width: 100%;
+    }
+}
+
+/* Loading Spinner */
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Spinner with text */
+.spinner-with-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.spinner-with-text .spinner-text {
+    margin-top: 1rem;
+}
+
+/* Feature card styling */
+.feature-card {
+    height: 100%;
+    transition: transform 0.3s ease;
+    border: none;
+    background-color: var(--bs-dark);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--bs-primary);
+}
+
+/* Header animation */
+.animated-title {
+    background: linear-gradient(90deg, var(--bs-primary), var(--bs-info));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradient-shift 5s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}

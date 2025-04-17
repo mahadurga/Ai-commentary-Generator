@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card bg-dark mb-4">
+                <div class="card-header">
+                    <h2 class="fs-4 mb-0">
+                        <i class="bi bi-gear-wide-connected me-2"></i>Video Analysis
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <div class="video-player-container">
+                                <video id="video-preview" class="img-fluid w-100 rounded" controls>
+                                    <source src="{{ url_for('static', filename='uploads/' + video.filename) }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h3 class="h5 mb-3">{{ video.original_name }}</h3>
+                            <p>Your video has been uploaded successfully. Click the button below to start the AI analysis process.</p>
+                            
+                            <div class="d-grid gap-2">
+                                <button id="start-processing" class="btn btn-primary">
+                                    <i class="bi bi-play-circle me-2"></i>Start Analysis
+                                </button>
+                            </div>
+                            
+                            <div id="processing-status" class="mt-4" style="display: none;">
+                                <div class="progress mb-3">
+                                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                                </div>
+                                <p id="progress-text" class="text-center">Initializing...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card bg-dark">
+                <div class="card-header">
+                    <h2 class="fs-4 mb-0">
+                        <i class="bi bi-info-circle me-2"></i>What Happens During Analysis
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <h3 class="h5 mb-3">Video Processing</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-transparent border-bottom py-2">
+                                    <i class="bi bi-camera me-2 text-primary"></i>Frame extraction and preprocessing
+                                </li>
+                                <li class="list-group-item bg-transparent border-bottom py-2">
+                                    <i class="bi bi-people me-2 text-primary"></i>Player detection and tracking
+                                </li>
+                                <li class="list-group-item bg-transparent border-bottom py-2">
+                                    <i class="bi bi-circle me-2 text-primary"></i>Ball tracking across frames
+                                </li>
+                                <li class="list-group-item bg-transparent py-2">
+                                    <i class="bi bi-person-arms-up me-2 text-primary"></i>Pose estimation for shot classification
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h3 class="h5 mb-3">Event Analysis</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-transparent border-bottom py-2">
+                                    <i class="bi bi-bullseye me-2 text-danger"></i>Shot classification (drive, pull, cut, etc.)
+                                </li>
+                                <li class="list-group-item bg-transparent border-bottom py-2">
+                                    <i class="bi bi-4-circle me-2 text-danger"></i>Boundary detection (four or six)
+                                </li>
+                                <li class="list-group-item bg-transparent border-bottom py-2">
+                                    <i class="bi bi-x-circle me-2 text-danger"></i>Wicket detection and classification
+                                </li>
+                                <li class="list-group-item bg-transparent py-2">
+                                    <i class="bi bi-mic me-2 text-danger"></i>Commentary generation with context
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="bi bi-info-circle-fill me-2"></i>The analysis process may take several minutes depending on the video length and complexity.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

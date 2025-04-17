@@ -1,0 +1,219 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="py-5 text-center">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="display-4 animated-title">Cricket Video Analysis with AI</h1>
+                <p class="lead text-secondary mb-4">Generate automated commentary based on detected events in cricket videos</p>
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="#upload" class="btn btn-primary px-4">
+                        <i class="bi bi-cloud-upload me-2"></i>Upload Video
+                    </a>
+                    <a href="#features" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-info-circle me-2"></i>Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Upload Section -->
+    <section id="upload" class="py-5">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <h2 class="fs-4 mb-0"><i class="bi bi-upload me-2"></i>Upload Cricket Video</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" id="upload-form">
+                            <div class="file-drop-area">
+                                <div class="file-drop-info">
+                                    <i class="bi bi-film upload-icon"></i>
+                                    <h5>Drag & drop your cricket video here</h5>
+                                    <p class="text-secondary">Or click to browse for files</p>
+                                    <p class="text-muted small">Supported formats: MP4, AVI, MOV, MKV (Max 500MB)</p>
+                                </div>
+                                <input type="file" name="video" id="video-upload" accept="video/mp4,video/avi,video/quicktime,video/x-matroska">
+                            </div>
+                            
+                            <div id="preview-container" class="text-center" style="display: none;">
+                                <div class="mb-3">
+                                    <video id="video-preview" class="img-fluid rounded" controls style="max-height: 300px; display: none;"></video>
+                                    <p id="file-info" class="mt-2" style="display: none;"></p>
+                                </div>
+                                <button type="submit" id="upload-button" class="btn btn-primary" disabled>
+                                    <i class="bi bi-arrow-right-circle me-2"></i>Analyze Video
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5">Features</h2>
+            <p class="lead text-secondary">Comprehensive cricket video analysis using AI</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-camera-video feature-icon"></i>
+                        <h3 class="card-title h5">Video Analysis</h3>
+                        <p class="card-text">Detect players, ball movement, and field positions using advanced computer vision</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-bullseye feature-icon"></i>
+                        <h3 class="card-title h5">Shot Detection</h3>
+                        <p class="card-text">Classify cricket shots like cover drives, pulls, and cuts with pose estimation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-activity feature-icon"></i>
+                        <h3 class="card-title h5">Event Recognition</h3>
+                        <p class="card-text">Automatically detect boundaries, wickets, and other key moments in the match</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-mic feature-icon"></i>
+                        <h3 class="card-title h5">Auto Commentary</h3>
+                        <p class="card-text">Generate engaging cricket commentary based on detected events and match context</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-soundwave feature-icon"></i>
+                        <h3 class="card-title h5">Text-to-Speech</h3>
+                        <p class="card-text">Convert generated commentary to realistic speech audio that follows the action</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-graph-up feature-icon"></i>
+                        <h3 class="card-title h5">Performance Insights</h3>
+                        <p class="card-text">Analyze player techniques, shot selection patterns, and match statistics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5">How It Works</h2>
+            <p class="lead text-secondary">Our AI-powered analysis process</p>
+        </div>
+        
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="cricket-field-container">
+                    <img src="{{ url_for('static', filename='assets/cricket-field.svg') }}" alt="Cricket Field Diagram" class="img-fluid">
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <ol class="list-group list-group-numbered list-group-flush">
+                            <li class="list-group-item bg-transparent border-bottom py-3">
+                                <div class="ms-2">
+                                    <div class="fw-bold">Video Processing</div>
+                                    Upload your cricket footage for frame-by-frame analysis
+                                </div>
+                            </li>
+                            <li class="list-group-item bg-transparent border-bottom py-3">
+                                <div class="ms-2">
+                                    <div class="fw-bold">Object Detection</div>
+                                    AI identifies players, ball, boundary ropes, and wickets
+                                </div>
+                            </li>
+                            <li class="list-group-item bg-transparent border-bottom py-3">
+                                <div class="ms-2">
+                                    <div class="fw-bold">Pose Estimation</div>
+                                    Analysis of player positions to classify cricket shots
+                                </div>
+                            </li>
+                            <li class="list-group-item bg-transparent border-bottom py-3">
+                                <div class="ms-2">
+                                    <div class="fw-bold">Event Detection</div>
+                                    Identification of boundaries, wickets, and other key events
+                                </div>
+                            </li>
+                            <li class="list-group-item bg-transparent border-bottom py-3">
+                                <div class="ms-2">
+                                    <div class="fw-bold">Commentary Generation</div>
+                                    Creation of context-aware cricket commentary text
+                                </div>
+                            </li>
+                            <li class="list-group-item bg-transparent py-3">
+                                <div class="ms-2">
+                                    <div class="fw-bold">Audio Synthesis</div>
+                                    Converting text commentary into natural-sounding speech
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <h2 class="fs-4 mb-0"><i class="bi bi-info-circle me-2"></i>About This Project</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>The Cricket Video Analysis System is an AI-powered tool that analyzes cricket videos to generate automated commentary based on detected events. The system uses computer vision and machine learning techniques to detect players, track the ball, classify cricket shots, and identify key events like boundaries and wickets.</p>
+                        
+                        <p>This project brings together several cutting-edge technologies:</p>
+                        <ul>
+                            <li>OpenCV for video processing</li>
+                            <li>Computer vision models for object detection</li>
+                            <li>Pose estimation for shot classification</li>
+                            <li>Natural language processing for commentary generation</li>
+                            <li>Text-to-speech synthesis for audio commentary</li>
+                        </ul>
+                        
+                        <p class="mb-0">Whether you're a cricket coach looking to analyze training sessions, a broadcaster seeking to automate commentary for local matches, or a cricket enthusiast wanting to enhance your match recordings, this tool provides valuable insights and engaging commentary.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
