@@ -57,10 +57,32 @@
                         <div class="commentary-text mb-3">
                             {{ results.commentary }}
                         </div>
-                        <audio id="commentary-audio" class="commentary-audio-player" controls>
+                        <audio id="commentary-audio" class="commentary-audio-player w-100" controls autoplay="false">
                             <source src="{{ url_for('static', filename=results.commentary_audio.replace('./static/', '')) }}" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
+                        <div class="d-flex justify-content-between mt-2">
+                            <button class="btn btn-sm btn-outline-primary" onclick="document.getElementById('commentary-audio').play()">
+                                <i class="bi bi-play-fill"></i> Play Commentary
+                            </button>
+                            <button class="btn btn-sm btn-outline-info" onclick="toggleAudioWithVideo()">
+                                <i class="bi bi-play-circle"></i> Sync with Video
+                            </button>
+                        </div>
+                        <script>
+                            function toggleAudioWithVideo() {
+                                const video = document.getElementById('results-video');
+                                const audio = document.getElementById('commentary-audio');
+                                
+                                if (video.paused) {
+                                    video.play();
+                                    audio.play();
+                                } else {
+                                    video.pause();
+                                    audio.pause();
+                                }
+                            }
+                        </script>
                     </div>
                 </div>
             </div>

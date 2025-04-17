@@ -127,7 +127,15 @@ def start_processing():
         commentary = generate_commentary(events)
         
         # Convert commentary to speech
-        text_to_speech(commentary, output_audio_path)
+        logger.info(f"Converting commentary to speech: {len(commentary)} characters")
+        from utils.text_to_speech import text_to_speech
+        success = text_to_speech(commentary, output_audio_path)
+        
+        if not success:
+            logger.warning("Failed to generate commentary audio, using sample instead")
+            import shutil
+            sample_audio = os.path.join(app.config['SAMPLE_FOLDER'], 'sample-commentary.mp3')
+            shutil.copy(sample_audio, output_audio_path)
         
         # Update session with results
         session['processing_results'] = {

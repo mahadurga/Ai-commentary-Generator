@@ -10,6 +10,7 @@ dependencies = [
     "gtts>=2.5.4",
     "gunicorn>=23.0.0",
     "numpy>=2.2.4",
+    "openai>=1.75.0",
     "opencv-python>=4.11.0.86",
     "psycopg2-binary>=2.9.10",
     "werkzeug>=3.1.3",
