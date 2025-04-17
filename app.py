@@ -20,14 +20,14 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "cricket-analysis-secret")
 
 # For YouTube link handling
-YOUTUBE_DL_AVAILABLE = False
+YTDLP_AVAILABLE = False
 try:
     # We're only importing this for feature detection
     # If not available, the YouTube feature will be disabled
-    import youtube_dl
-    YOUTUBE_DL_AVAILABLE = True
+    import yt_dlp
+    YTDLP_AVAILABLE = True
 except ImportError:
-    logger.warning("youtube_dl not installed. YouTube video import will be disabled.")
+    logger.warning("yt-dlp not installed. YouTube video import will be disabled.")
 
 # Configure upload folder
 UPLOAD_FOLDER = Path('./static/uploads')
@@ -187,7 +187,7 @@ def results():
 
 @app.route('/youtube_link', methods=['POST'])
 def youtube_link():
-    if not YOUTUBE_DL_AVAILABLE:
+    if not YTDLP_AVAILABLE:
         flash('YouTube download functionality is not available. Please upload a video file directly.', 'danger')
         return redirect(url_for('index'))
     
@@ -205,13 +205,16 @@ def youtube_link():
         
         # Download options
         ydl_opts = {
-            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4',
+            'format': 'best[ext=mp4]/bestvideo[ext=mp4]+bestaudio[ext=m4a]/best',
             'outtmpl': output_path,
             'noplaylist': True,
+            'restrictfilenames': True,
+            'merge_output_format': 'mp4',
+            'verbose': True
         }
         
         # Download the video
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             logger.info(f"Downloading YouTube video: {youtube_url}")
             info = ydl.extract_info(youtube_url, download=True)
             # Get video title

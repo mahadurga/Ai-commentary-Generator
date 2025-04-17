@@ -425,6 +425,7 @@ dependencies = [
     { name = "psycopg2-binary" },
     { name = "werkzeug" },
     { name = "youtube-dl" },
+    { name = "yt-dlp" },
 ]
 
 [package.metadata]
@@ -439,6 +440,7 @@ requires-dist = [
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
     { name = "werkzeug", specifier = ">=3.1.3" },
     { name = "youtube-dl", specifier = ">=2021.12.17" },
+    { name = "yt-dlp", specifier = ">=2025.3.31" },
 ]
 
 [[package]]
@@ -530,4 +532,13 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/01/4f/ab0d0806f4d818168d0ec833df14078c9d1ddddb5c42fa7bfb6f15ecbfa7/youtube_dl-2021.12.17.tar.gz", hash = "sha256:bc59e86c5d15d887ac590454511f08ce2c47698d5a82c27bfe27b5d814bbaed2", size = 1555640 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/40/93/65c208f51895f74bbfea1423974c54fff1d1c4e9a97ebee1011b021554b8/youtube_dl-2021.12.17-py2.py3-none-any.whl", hash = "sha256:f1336d5de68647e0364a47b3c0712578e59ec76f02048ff5c50ef1c69d79cd55", size = 1902317 },
+]
+
+[[package]]
+name = "yt-dlp"
+version = "2025.3.31"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/11/333d16f88b1515d4c601e1dfbf1028e6798f0b2a8ff1dc5aaa7b797aa9e8/yt_dlp-2025.3.31.tar.gz", hash = "sha256:1bfe0e660d1a70a09e27b2d58f92e30b1e2e362cc487829f2f824346ae49fb91", size = 2967466 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a8/bf/7b0affb8f163376309696cfd1c677818fa0969fbb9d88225087208799afe/yt_dlp-2025.3.31-py3-none-any.whl", hash = "sha256:8ecb3aa218a3bebe431119f513a8972b9b9d992edf67168c00ab92329a03baec", size = 3226021 },
 ]
