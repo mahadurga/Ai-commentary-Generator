@@ -17,34 +17,28 @@
                     <h3 class="h5 mb-3">{{ video.original_name }}</h3>
                     
                     <div class="video-player-container mb-4">
-                        <video id="results-video" class="img-fluid w-100 rounded" preload="metadata">
+                        <!-- Simple HTML5 video tag with controls -->
+                        <video id="results-video" class="img-fluid w-100 rounded" controls>
                             <source src="{{ url_for('static', filename=results.processed_video.replace('./static/', '')) }}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         
-                        <div class="mt-2 mb-2">
-                            <div class="progress" style="height: 8px; cursor: pointer;" id="progress-container">
-                                <div id="video-progress-bar" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                        <!-- Simple progress bar for visualization only -->
+                        <div class="mt-3">
+                            <h5 class="h6 mb-2">Video Timeline</h5>
+                            <div class="progress mb-2" style="height: 8px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
-                            <div id="events-timeline" class="events-timeline position-relative" style="height: 15px; margin-top: -15px;"></div>
-                        </div>
-                        
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button id="play-button" class="btn btn-primary btn-sm">
-                                    <i class="bi bi-play-fill"></i> Play
-                                </button>
-                                <button id="pause-button" class="btn btn-secondary btn-sm" style="display: none;">
-                                    <i class="bi bi-pause-fill"></i> Pause
-                                </button>
-                                <button id="mute-button" class="btn btn-outline-secondary btn-sm ms-2">
-                                    <i class="bi bi-volume-up-fill"></i>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <span class="badge bg-info">Boundaries</span>
+                                    <span class="badge bg-danger">Wickets</span>
+                                    <span class="badge bg-success">Shots</span>
+                                </div>
+                                <button id="events-button" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-list-ul"></i> Jump to Events
                                 </button>
                             </div>
-                            
-                            <span class="badge bg-dark">
-                                <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
-                            </span>
                         </div>
                     </div>
                     
@@ -56,70 +50,19 @@
                         <div class="commentary-text mb-3">
                             {{ results.commentary }}
                         </div>
-                        <audio id="commentary-audio" class="commentary-audio-player w-100" controls autoplay="false">
+                        <!-- Simple audio player with controls -->
+                        <audio id="commentary-audio" class="commentary-audio-player w-100" controls>
                             <source src="{{ url_for('static', filename=results.commentary_audio.replace('./static/', '')) }}" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
-                        <div class="d-flex justify-content-between mt-2">
-                            <button class="btn btn-sm btn-outline-primary" onclick="playCommentaryOnly()">
-                                <i class="bi bi-play-fill"></i> Play Commentary
-                            </button>
-                            <button class="btn btn-sm btn-outline-info" onclick="toggleAudioWithVideo()">
-                                <i class="bi bi-play-circle"></i> Sync with Video
-                            </button>
-                        </div>
                         
-                        <script>
-                            function playCommentaryOnly() {
-                                const audio = document.getElementById('commentary-audio');
-                                if (audio) {
-                                    // First pause the audio if it's playing
-                                    if (!audio.paused) {
-                                        audio.pause();
-                                        // Wait a moment before playing again
-                                        setTimeout(() => {
-                                            audio.play().catch(e => console.log("Error playing audio:", e));
-                                        }, 50);
-                                    } else {
-                                        audio.play().catch(e => console.log("Error playing audio:", e));
-                                    }
-                                }
-                            }
-                        </script>
-                        <script>
-                            function toggleAudioWithVideo() {
-                                const video = document.getElementById('results-video');
-                                const audio = document.getElementById('commentary-audio');
-                                
-                                try {
-                                    if (video.paused) {
-                                        // First play the video, then the audio
-                                        const videoPlayPromise = video.play();
-                                        
-                                        if (videoPlayPromise !== undefined) {
-                                            videoPlayPromise
-                                                .then(() => {
-                                                    // Video is playing, now play audio
-                                                    setTimeout(() => {
-                                                        audio.play().catch(e => console.log("Audio play error:", e));
-                                                    }, 100);
-                                                })
-                                                .catch(e => {
-                                                    console.log("Video play error:", e);
-                                                });
-                                        }
-                                    } else {
-                                        // Pause in reverse order: first audio, then video
-                                        audio.pause();
-                                        setTimeout(() => {
-                                            video.pause();
-                                        }, 50);
-                                    }
-                                } catch (e) {
-                                    console.error("Error in toggleAudioWithVideo:", e);
-                                }
-                            }
-                        </script>
+                        <div class="mt-3">
+                            <div class="alert alert-info small">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                Use the built-in player controls above to play the commentary audio. 
+                                For best experience, click the download buttons below to save the files locally.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -245,5 +188,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='js/video-player.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/simple-player.js') }}"></script>
 {% endblock %}
