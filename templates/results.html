@@ -54,27 +54,22 @@
                         <h4 class="h6 mb-3">
                             <i class="bi bi-mic-fill me-2"></i>Generated Commentary
                         </h4>
-                        <div class="commentary-text mb-3">
+                        <div id="commentary-text" class="commentary-text mb-3">
                             {{ results.commentary }}
                         </div>
-                        <!-- Simple audio player with controls -->
-                        <audio id="commentary-audio" class="commentary-audio-player w-100" controls preload="auto">
-                            <source src="{{ url_for('static', filename=results.commentary_audio.replace('./static/', '')) }}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
                         
-                        <!-- Audio file debug info -->
-                        <div class="mt-2">
-                            <small class="text-muted">
-                                Audio file path: {{ results.commentary_audio.replace('./static/', '') }}
-                            </small>
+                        <!-- Commentary controls -->
+                        <div class="d-flex justify-content-center">
+                            <button id="play-commentary" class="btn btn-success btn-lg">
+                                <i class="bi bi-play-fill"></i> Play Commentary
+                            </button>
                         </div>
                         
-                        <div class="mt-3">
-                            <div class="alert alert-info small">
+                        <div class="mt-3 mb-2">
+                            <div class="alert alert-info">
                                 <i class="bi bi-info-circle-fill me-2"></i>
-                                Use the built-in player controls above to play the commentary audio. 
-                                For best experience, click the download buttons below to save the files locally.
+                                Click the button above to play the commentary using your browser's text-to-speech capability.
+                                The commentary will be highlighted as it's being read.
                             </div>
                         </div>
                     </div>
@@ -202,5 +197,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='js/simple-player.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/speech-synthesizer.js') }}"></script>
 {% endblock %}
