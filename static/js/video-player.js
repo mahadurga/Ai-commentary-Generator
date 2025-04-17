@@ -35,9 +35,10 @@ document.addEventListener('DOMContentLoaded', function() {
             volumeControl.addEventListener('input', updateVolume);
         }
         
-        if (progressBar) {
-            progressBar.addEventListener('click', seekVideo);
-            progressBar.addEventListener('input', seekVideo);
+        // Add click event to progress container
+        const progressContainer = document.getElementById('progress-container');
+        if (progressContainer) {
+            progressContainer.addEventListener('click', seekVideo);
         }
         
         // Video events
@@ -105,8 +106,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function seekVideo(e) {
-        if (progressBar) {
-            const percent = e.offsetX / progressBar.offsetWidth;
+        const progressContainer = document.querySelector('.progress');
+        if (progressContainer) {
+            const rect = progressContainer.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
             const seekTime = percent * videoPlayer.duration;
             
             videoPlayer.currentTime = seekTime;
@@ -118,10 +121,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function updateProgressBar() {
-        if (progressBar && videoPlayer.duration) {
+        if (videoPlayer.duration) {
             const percent = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-            progressBar.value = percent;
-            progressBar.style.backgroundSize = `${percent}% 100%`;
+            
+            // Update the progress bar
+            const progressBarElem = document.getElementById('video-progress-bar');
+            if (progressBarElem) {
+                progressBarElem.style.width = `${percent}%`;
+            }
         }
         
         updateTimeDisplay();
