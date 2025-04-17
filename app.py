@@ -19,6 +19,16 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "cricket-analysis-secret")
 
+# For YouTube link handling
+YOUTUBE_DL_AVAILABLE = False
+try:
+    # We're only importing this for feature detection
+    # If not available, the YouTube feature will be disabled
+    import youtube_dl
+    YOUTUBE_DL_AVAILABLE = True
+except ImportError:
+    logger.warning("youtube_dl not installed. YouTube video import will be disabled.")
+
 # Configure upload folder
 UPLOAD_FOLDER = Path('./static/uploads')
 RESULTS_FOLDER = Path('./static/results')
@@ -174,6 +184,55 @@ def results():
     return render_template('results.html', 
                           video=video_info, 
                           results=results_info)
+
+@app.route('/youtube_link', methods=['POST'])
+def youtube_link():
+    if not YOUTUBE_DL_AVAILABLE:
+        flash('YouTube download functionality is not available. Please upload a video file directly.', 'danger')
+        return redirect(url_for('index'))
+    
+    youtube_url = request.form.get('youtube_url')
+    if not youtube_url:
+        flash('No YouTube URL provided', 'danger')
+        return redirect(url_for('index'))
+    
+    try:
+        # Create a unique ID for this video
+        unique_id = str(uuid.uuid4())
+        
+        # Set the output file path
+        output_path = os.path.join(app.config['UPLOAD_FOLDER'], f"youtube_{unique_id}.mp4")
+        
+        # Download options
+        ydl_opts = {
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4',
+            'outtmpl': output_path,
+            'noplaylist': True,
+        }
+        
+        # Download the video
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            logger.info(f"Downloading YouTube video: {youtube_url}")
+            info = ydl.extract_info(youtube_url, download=True)
+            # Get video title
+            video_title = info.get('title', 'YouTube Video')
+        
+        # Store file information in session
+        session['uploaded_video'] = {
+            'filename': os.path.basename(output_path),
+            'original_name': f"{video_title}.mp4",
+            'path': output_path,
+            'unique_id': unique_id,
+            'timestamp': time.time(),
+            'source': 'youtube'
+        }
+        
+        return redirect(url_for('process_video_view'))
+    
+    except Exception as e:
+        logger.error(f"Error downloading YouTube video: {str(e)}")
+        flash(f"Error downloading video: {str(e)}", 'danger')
+        return redirect(url_for('index'))
 
 @app.route('/api/events')
 def get_events():

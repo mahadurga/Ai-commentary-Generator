@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const uploadForm = document.getElementById('upload-form');
     const uploadButton = document.getElementById('upload-button');
     
+    // YouTube link elements
+    const youtubeUrlInput = document.getElementById('youtube-url');
+    const youtubePreview = document.getElementById('youtube-preview');
+    const youtubeEmbed = document.getElementById('youtube-embed');
+    const youtubeInfo = document.getElementById('youtube-info');
+    
     // Processing status elements
     const processingStatus = document.getElementById('processing-status');
     const progressBar = document.getElementById('progress-bar');
@@ -39,6 +45,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize processing functionality
     if (startProcessingBtn) {
         startProcessingBtn.addEventListener('click', startProcessing);
+    }
+    
+    // Initialize YouTube link handling
+    if (youtubeUrlInput) {
+        youtubeUrlInput.addEventListener('input', handleYoutubeUrlInput);
+        youtubeUrlInput.addEventListener('paste', function() {
+            // Short delay to allow paste to complete
+            setTimeout(handleYoutubeUrlInput, 50);
+        });
     }
     
     // Functions for file upload handling
@@ -203,5 +218,39 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset progress
             updateProgress(0, 'Processing failed');
         }
+    }
+    
+    // Functions for YouTube link handling
+    function handleYoutubeUrlInput() {
+        if (!youtubeUrlInput || !youtubePreview || !youtubeEmbed || !youtubeInfo) return;
+        
+        const url = youtubeUrlInput.value.trim();
+        if (!url) {
+            youtubePreview.style.display = 'none';
+            return;
+        }
+        
+        // Extract YouTube video ID
+        const videoId = extractYoutubeVideoId(url);
+        if (videoId) {
+            // Show preview
+            youtubePreview.style.display = 'block';
+            
+            // Set iframe src
+            youtubeEmbed.src = `https://www.youtube.com/embed/${videoId}`;
+            
+            // Update info text
+            youtubeInfo.textContent = 'Video validated! Click "Download & Analyze" to proceed.';
+        } else {
+            youtubePreview.style.display = 'none';
+            youtubeEmbed.src = '';
+        }
+    }
+    
+    function extractYoutubeVideoId(url) {
+        // Try to extract the video ID from various YouTube URL formats
+        const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[7].length === 11) ? match[7] : null;
     }
 });
